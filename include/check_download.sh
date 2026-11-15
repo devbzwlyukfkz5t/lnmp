@@ -248,7 +248,7 @@ checkDownload() {
         echo "Download MariaDB ${FILE_NAME} package..."
         src_url=${DOWN_ADDR_MARIADB}/${FILE_NAME} && Download_src
         wget --tries=6 -c --no-check-certificate ${DOWN_ADDR_MARIADB}/md5sums.txt -O ${FILE_NAME}.md5
-        MARAIDB_TAR_MD5=$(awk '{print $1}' ${FILE_NAME}.md5)
+        MARAIDB_TAR_MD5=$(awk '{print $1}' ${FILE_NAME}.md5 | head -n 1)
         [ -z "${MARAIDB_TAR_MD5}" ] && MARAIDB_TAR_MD5=$(curl -s ${DOWN_ADDR_MARIADB_BK}/md5sums.txt | grep ${FILE_NAME} | awk '{print $1}')
         tryDlCount=0
         while [ "$(md5sum ${FILE_NAME} | awk '{print $1}')" != "${MARAIDB_TAR_MD5}" ]; do
