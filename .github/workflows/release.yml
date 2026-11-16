@@ -1,0 +1,26 @@
+name: Create Release with Zip
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers whenever a tag starting with 'v' is pushed
+
+permissions:
+  contents: write # Required to create releases and upload assets
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Zip Archive
+        # Zips the 'dist/' folder (or replace with '.' for the whole repo) while excluding git files
+        run: zip -r release-package.zip . -x "*.git*" "*.github*"
+
+      - name: Create GitHub Release & Upload Zip
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-package.zip
+          generate_release_notes: true
