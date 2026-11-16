@@ -17,9 +17,20 @@ jobs:
       - name: Create Zip Archive
         run: zip -r release-package.zip . -x "*.git*" "*.github*"
 
-      - name: Create Release and Upload Asset
-        uses: softprops/action-gh-release@v2
-        with:
-          files: release-package.zip
+      - name: Generate release tag
+        id: tag
+        if: !cancelled()
+        run: |
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")"
+          touch release.txt
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> release.txt
+
+      - name: Upload firmware to release
+        uses: softprops/action-gh-release@master
+        if: !cancelled()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: release.txt
+          files: release-package.zip
