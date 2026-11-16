@@ -11,15 +11,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Create Zip Archive
-        # Zips the 'dist/' folder (or replace with '.' for the whole repo) while excluding git files
         run: zip -r release-package.zip . -x "*.git*" "*.github*"
 
-      - name: Create GitHub Release & Upload Zip
+      - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
           files: release-package.zip
-          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
