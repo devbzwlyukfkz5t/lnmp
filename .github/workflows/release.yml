@@ -2,8 +2,6 @@ name: Create Release with Zip
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 0 */7 * *
 
 jobs:
   build-and-release:
