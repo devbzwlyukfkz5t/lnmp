@@ -1,9 +1,9 @@
 name: Create Release with Zip
 
 on:
-  push:
-    tags:
-      - 'v*' # Triggers whenever a tag starting with 'v' is pushed
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 */7 * *
 
 permissions:
   contents: write # Required to create releases and upload assets
